@@ -5,7 +5,6 @@ import * as nunjucks from 'nunjucks';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
-  let puerto = process.env.PORT || 443;
   
   nunjucks.configure('views', {
     autoescape: true,
@@ -15,7 +14,8 @@ async function bootstrap() {
   app.useStaticAssets(__dirname + '/../public', {prefix: 'public'});
   app.useStaticAssets(__dirname + '/../node_modules/bootstrap/dist');
   app.setViewEngine('njk');
-  
-  await app.listen(puerto);
+  app.enableCors();
+  await app.listen(process.env.PORT || 443);
+
 }
 bootstrap();
